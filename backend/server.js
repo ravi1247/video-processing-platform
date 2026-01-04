@@ -1,6 +1,6 @@
 const express = require("express");
 const http = require("http");
-const socketIo = require("socket.io");
+const { Server } = require("socket.io"); // FIXED: Correct destructured import
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
@@ -14,26 +14,21 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: [
-      'http://localhost:5173',
-      'https://your-frontend-app.onrender.com'
-    ],
-    credentials: true
-  }
+    origin: ["http://localhost:5173", process.env.FRONTEND_URL || "*"],
+    credentials: true,
+  },
 });
-
 
 // Connect to MongoDB
 connectDB();
 
 // Middleware
-app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://your-frontend-app.onrender.com' // Will update this after frontend deployment
-  ],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:5173", process.env.FRONTEND_URL || "*"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
