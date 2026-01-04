@@ -25,7 +25,7 @@ connectDB();
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173", process.env.FRONTEND_URL || "*"],
+    origin: ["https://video-processing-frontend-0bwo.onrender.com", process.env.FRONTEND_URL || "*"],
     credentials: true,
   })
 );
