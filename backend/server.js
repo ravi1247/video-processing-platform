@@ -11,24 +11,29 @@ dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server, {
+
+const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
+    origin: [
+      'http://localhost:5173',
+      'https://your-frontend-app.onrender.com'
+    ],
+    credentials: true
+  }
 });
+
 
 // Connect to MongoDB
 connectDB();
 
 // Middleware
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://your-frontend-app.onrender.com' // Will update this after frontend deployment
+  ],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
